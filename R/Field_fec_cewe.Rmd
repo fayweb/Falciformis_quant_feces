@@ -1,0 +1,70 @@
+---
+title: "Quant_falc_1"
+author: "Fay"
+date: '2022-09-12'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load Libraries
+
+```{r}
+library(tidyverse)
+```
+
+## Load data sets
+
+```{r}
+EqPCR <- read.csv("https://raw.githubusercontent.com/derele/Mouse_Eimeria_Field/master/data_products/CEWE_FECES_infection_intensities")
+
+sota <- read.csv("https://raw.githubusercontent.com/derele/Mouse_Eimeria_Field/master/data_products/SOTA_Data_Product.csv")
+```
+
+```{r}
+ggplot(data= EqPCR, mapping = aes(x =  FEC_Eim_Ct,y=delta_ct_cewe_MminusE,col=MCs,size=log(OPG+1)))+
+  geom_point()+
+  scale_size(range=c(0.5,3))+
+  geom_smooth(method="lm", size=0.5,se=TRUE)+
+  theme(axis.title.x = element_text(size=10))+
+  theme(axis.title.y = element_text(size = 10))+
+  theme(legend.text=element_text(size=7))+
+  theme(legend.title =element_text(size=9))+
+  theme(legend.spacing.y = unit(0.05,"cm"))+
+  theme(panel.background=element_rect(fill="gray95",color="gray40"))+
+  labs(x="Ct from qPCR with faecal DNA",y="deltaCt from qPCR with tissue DNA",color="Infected",size="log(OPG)")+
+  guides(color=guide_legend(override.aes = list(size=2)))
+
+
+```
+```{r}
+
+ggplot(data=EqPCR,mapping=aes(x=delta_ct_cewe_MminusE,y=FEC_Eim_Ct,col=MCs,size=log(OPG+1)))+
+  geom_point()+
+  scale_size(range=c(0.5,3))+
+  geom_smooth(method="lm", size=0.5,se=TRUE)+
+  theme(axis.title.x = element_text(size=10))+
+  theme(axis.title.y = element_text(size = 10))+
+  theme(legend.text=element_text(size=7))+
+  theme(legend.title =element_text(size=9))+
+  theme(legend.spacing.y = unit(0.05,"cm"))+
+  theme(panel.background=element_rect(fill="gray95",color="gray40"))+
+  labs(x="delta Ct from qPCR with tissue DNA",y="Ct from qPCR with faecal DNA",color="Infected",size="log(OPG)")+
+  guides(color=guide_legend(override.aes = list(size=2)))
+```
+```{r}
+ggplot(EqPCR, aes(x =  FEC_Eim_Ct,y=delta_ct_cewe_MminusE,col=MCs,size=log(OPG+1))) + 
+  geom_jitter() +
+    geom_smooth(method="lm", size=0.5,se=TRUE)
+```
+```{r}
+ggplot(EqPCR, aes(x =  FEC_Eim_Ct , y =OPG,col=MCs,size=log(OPG+1))) + 
+  geom_point()
+```
+```{r}
+ggplot(EqPCR, aes(x =  delta_ct_cewe_MminusE , y =OPG,col=MCs,size=log(OPG+1))) + 
+  geom_jitter() + 
+  geom_smooth(method="lm", size=0.5,se=TRUE)
+```
